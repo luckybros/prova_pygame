@@ -1,6 +1,12 @@
 import pygame
 from sys import exit
 
+def display_score():
+    current_time = pygame.time.get_ticks()
+    score_surf = test_font.render(f'{current_time}', False, (64, 64, 64))
+    score_rect = score_surf.get_rect(center = (400, 50))
+    screen.blit(score_surf, score_rect)
+
 pygame.init()
 
 # creating screen
@@ -10,11 +16,12 @@ pygame.display.set_caption('SUPER GIOCO')
 clock = pygame.time.Clock()
 test_font = pygame.font.Font('pygame_test/font/Pixeltype.ttf', 50)
 game_active = False
+score = 3
 
 sky_surf = pygame.image.load('pygame_test/graphics/Sky.png').convert()
 ground_surf = pygame.image.load('pygame_test/graphics/ground.png').convert()
 
-score_surf = test_font.render('OH YEAH!!', True, (64,64,64))
+score_surf = test_font.render(str(score), True, (64,64,64))
 score_rect = score_surf.get_rect(center = (400, 50))
 
 end_game_surf = test_font.render('CIAO', True, (255,255,255))
@@ -40,14 +47,17 @@ while True:
                     game_active = True
             
     if game_active:        
-        pygame.draw.rect(screen, '#c0e8ec', score_rect)
-        pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
+        #pygame.draw.rect(screen, '#c0e8ec', score_rect)
+        #pygame.draw.rect(screen, '#c0e8ec', score_rect, 10)
+        #screen.blit(score_surf, score_rect)
+        
 
         screen.blit(sky_surf, (0,0))
         screen.blit(ground_surf, (0, 300))
-        screen.blit(score_surf, score_rect)
         screen.blit(enemy_surf, enemy_rect)
         screen.blit(player_surf, player_rect)
+
+        display_score()
 
         # player
         player_gravity += 1
@@ -60,8 +70,8 @@ while True:
 
         # ends the game if the enemy is touched
         if enemy_rect.colliderect(player_rect):
-            game_active = False
             enemy_rect.left = 800
+            game_active = False
     
     else:
         screen.fill('Black')
